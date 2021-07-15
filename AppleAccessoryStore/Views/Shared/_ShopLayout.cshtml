@@ -2,7 +2,7 @@
 @using BusinessObject;
 @using Newtonsoft.Json;
 @inject IHttpContextAccessor HttpContextAccessor
-@{ string userId = HttpContextAccessor.HttpContext.Session.GetString("userId");
+@{ int? userId = HttpContextAccessor.HttpContext.Session.GetInt32("userId");
     string userName = HttpContextAccessor.HttpContext.Session.GetString("userName");
     string role = HttpContextAccessor.HttpContext.Session.GetString("Role"); }
 @{
@@ -50,69 +50,6 @@
     <style type="text/css" id="enject"></style>
 </head>
 <body>
-    <!--<header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AppleAccessoryStore</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>-->
-    <!--Chưa có-->
-    <!--<li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="ProductList">Product List</a>
-    </li>
-    //a@if (userName == null)
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-        </li>
-    }
-    //a@if (userName != null)
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile" asp-route-userId="userId">Profile</a>
-        </li>
-
-    }
-    //a@if (role != null)
-    {
-        if (role.Trim().Equals("AD"))
-        {-->
-    <!--Chưa có-->
-    <!--<li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="">User List</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
-                                </li>
-                                <li class="nav-item">
-                                    HI ADMIN
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
-                                </li>
-                                <li class="nav-item">
-                                    HI CUSTOMER
-                                </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>-->
     <div id="header">
         <div class="container">
             <div id="welcomeLine" class="row">

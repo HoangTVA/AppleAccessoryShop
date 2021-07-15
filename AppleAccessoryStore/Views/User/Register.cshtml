@@ -2,48 +2,66 @@
 
 @{
     ViewData["Title"] = "Register";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+}
+@{ if (ViewBag.userInfo==null)
+    {
+        ViewBag.userInfo = new BusinessObject.TblUser();
+    }
 }
 
-<h1>Register</h1>
+    <ul class="breadcrumb">
+        <li><a asp-action="Index" asp-controller="Home">Home</a> <span class="divider">/</span></li>
+        <li class="active">Registration</li>
+    </ul>
+    <h1>Registration</h1>
 
-<h4>TblUser</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserEmail" class="control-label"></label>
-                <input asp-for="UserEmail" class="form-control" />
-                <span asp-validation-for="UserEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserPassword" class="control-label"></label>
-                <input asp-for="UserPassword" class="form-control" />
-                <span asp-validation-for="UserPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                @Html.Label("Confirm Password")
-                @Html.TextBox("txtConfirm")
-            </div>
-            @if (@ViewBag.Message != null)
-             {
-                <div style="border: 1px solid red">
-                    @ViewBag.Message
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Register" class="form-horizontal">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="control-group">
+                    <label asp-for="UserEmail" class="control-label" for="input01"></label>
+                    <div class="controls">
+                        <input asp-for="UserEmail" class="input-xlarge" id="input01" value="@ViewBag.userInfo.UserEmail" />
+
+                    </div>
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
                 </div>
-             }
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+                <div class="control-group">
+                    <label asp-for="UserPassword" class="control-label" for="input02"></label>
+                    <div class="controls">
+                        <input asp-for="UserPassword" class="input-xlarge" id="input02" value="@ViewBag.userInfo.UserPassword"/>
+
+                    </div>
+                    <span asp-validation-for="UserPassword" class="text-danger"></span>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="input03">Confirm Password</label>
+                    <div class="controls">
+                        <input name="txtConfirm" class="input-xlarge" id="input03" />
+
+                    </div>
+                </div>
+                @if (@ViewBag.Message != null)
+                {
+                    <div style="border: 1px solid red">
+                        @ViewBag.Message
+                    </div>
+                }
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
         </form>
     </div>
-</div>
+    </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
