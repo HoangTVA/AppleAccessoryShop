@@ -167,7 +167,7 @@ namespace AppleAccessoryStore.Controllers
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(TblProduct product)
+        public async Task<IActionResult> Create(TblProduct product, List<IFormFile> files)
         {
             try
             {
@@ -175,7 +175,24 @@ namespace AppleAccessoryStore.Controllers
                 {
                     productRepository.InsertProduct(product);
                 }
-                
+                long size = files.Sum(f => f.Length);
+
+                foreach (var formFile in files)
+                {
+                    if (formFile.Length > 0)
+                    {
+                        var filePath = "~/image/";
+
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+                    }
+                }
+
+                // Process uploaded files
+                // Don't rely on or trust the FileName property without validation.
+
                 return RedirectToAction(nameof(Index));
             }
             catch
