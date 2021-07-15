@@ -11,6 +11,7 @@ namespace BusinessObject
         public int? UserId { get; set; }
         public DateTime? OrderDate { get; set; }
         public decimal? Total { get; set; }
+        public string Address { get; set; }
 
         public virtual TblUser User { get; set; }
     }

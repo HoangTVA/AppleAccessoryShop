@@ -78,7 +78,7 @@ namespace AppleAccessoryStore.Controllers
                 //  return Json(cart2);
             }
 
-            return RedirectToAction(nameof(ListCart));
+            return RedirectToAction(nameof(Index));
 
         }
 
@@ -117,26 +117,37 @@ namespace AppleAccessoryStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Buy()
+        public IActionResult Buy(string Address)
         {
             var cart = HttpContext.Session.GetString("cart");
             var userId = HttpContext.Session.GetInt32("userId");
+            decimal? totalPrice = 0;
             if (userId == null)
             {
                 return RedirectToAction("Login", "User");
             }
+            if (Address == null)
+            {
+                return RedirectToAction(nameof(ListCart));
+            }
             if (cart != null)
             {
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                for (int i = 0; i < dataCart.Count; i++)
+                {
+                    totalPrice = totalPrice + (dataCart[i].product.ProductPrice * dataCart[i].quantity);
+                }
                 int orderCount = orderRepository.GetOrders().Count() + 1;
                 TblOrder order = new TblOrder
                 {
                     OrderId = orderCount,
                     UserId = userId,
                     OrderDate = DateTime.Now,
-                    Total = 30
+                    Total = totalPrice, 
+                    Address = Address
                 };
                 orderRepository.AddOrder(order);
-                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                //List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
                 for (int i = 0; i < dataCart.Count; i++)
                 {
                     TblOrderDetail details = new TblOrderDetail

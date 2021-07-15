@@ -2,43 +2,55 @@
 
 @{
     ViewData["Title"] = "Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
 }
 
-<h1>Profile</h1>
+    <ul class="breadcrumb">
+        <li><a asp-action="Index" asp-controller="Home">Home</a> <span class="divider">/</span></li>
+        <li class="active">Edit Profile</li>
+    </ul>
+    <h3>PROFILE</h3>
+    <hr class="soft" />
 
-<div>
-    <h4>TblUser</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserEmail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserEmail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserPassword)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserPassword)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RoleId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RoleId)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Change Email and Password", "Edit", new { userId = Model.UserId })
-    <a asp-action="Index">Back to List</a>
+    <form class="form-horizontal">
+        <fieldset>
 
-</div>
+            <div class="control-group">
+                <label class="control-label" for="input01">User ID</label>
+                <div class="controls">
+                    @Html.DisplayFor(model => model.UserId)
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input02">Email</label>
+                <div class="controls">
+                    @Html.DisplayFor(model => model.UserEmail)
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input03">Password</label>
+                <div class="controls">
+                    @Html.DisplayFor(model => model.UserPassword)
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input04">Role</label>
+                <div class="controls">
+                    @Html.DisplayFor(model => model.RoleId)
+
+                </div>
+            </div>
+            <hr class="soft" />
+            <div class="control-group">
+                <div class="controls">
+                    <a asp-controller="User" asp-action="Edit" asp-route-userId="@Model.UserId" role="button" style="padding-right:0"><span class="btn btn-primary btn-success">Change Email and Password</span></a>
+                    <a href="order_history.html" role="button" style="padding-right:0"><span class="btn btn-primary btn-info">Order History</span></a>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+

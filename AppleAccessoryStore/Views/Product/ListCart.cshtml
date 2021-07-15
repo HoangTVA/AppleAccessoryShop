@@ -50,36 +50,23 @@
         </tbody>
         <a asp-action="Buy">Buy</a>
     </table>
-
-    <table class="table table-bordered">
-        <tr>
-            <th>SHIPPING ADDRESS</th>
-        </tr>
-        <tr>
-            <td>
-                <form class="form-horizontal">
-
+    <form class="form-horizontal" asp-action="Buy">
+        <table class="table table-bordered">
+            <tr>
+                <th>SHIPPING ADDRESS</th>
+            </tr>
+            <tr>
+                <td>
                     <div class="control-group">
                         <label class="control-label" for="">Your shipping address </label>
                         <div class="controls">
-                            <input type="text" id="inputAddress" placeholder="123, A Street, District 2">
+                            <input type="text" name="Address" id="inputAddress" placeholder="123, A Street, District 2">
                         </div>
                     </div>
 
-                    <div class="control-group" style="margin-left: -10rem;">
-                        <div class="controls">
-                            <label class="radio">
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                                Pay after delivery (Using the billing address above as shipping address)
-                                <br />
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" checked="">
-                                Pay at SE15 Shop
-                            </label>
-                        </div>
-                    </div>
-                </form>
-            </td>
-        </tr>
-    </table>
-    <a href="products.html" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
-    <a href="order_summary.html" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
+                </td>
+            </tr>
+        </table>
+        <a href="products.html" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
+        <button type="submit" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></button>
+    </form>
