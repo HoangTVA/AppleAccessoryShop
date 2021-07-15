@@ -5,12 +5,10 @@
     Layout = "~/Views/Shared/_ShopLayout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>TblProduct</h4>
+<h1 style="text-align:center;">Create</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" style="transform:translateX(45%);">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <!--asp-controller="FileUpload" enctype="multipart/form-data"-->
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
