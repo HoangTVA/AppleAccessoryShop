@@ -147,7 +147,7 @@ namespace AppleAccessoryStore.Controllers
                     Address = Address
                 };
                 orderRepository.AddOrder(order);
-                //List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                HttpContext.Session.SetString("order", JsonConvert.SerializeObject(order));
                 for (int i = 0; i < dataCart.Count; i++)
                 {
                     TblOrderDetail details = new TblOrderDetail
@@ -159,9 +159,26 @@ namespace AppleAccessoryStore.Controllers
                     };
                     detailRepository.addDetail(details);
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(OrderCompletion));
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult OrderCompletion()
+        {
+            var cart = HttpContext.Session.GetString("cart");//get key cart
+            var order = HttpContext.Session.GetString("order");
+            if (cart != null && order !=null)
+            {
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                TblOrder orderData = JsonConvert.DeserializeObject<TblOrder>(order);
+                ViewBag.order = orderData;
+                ViewBag.cart = dataCart;
+                HttpContext.Session.Remove("cart");
+                HttpContext.Session.Remove("order");
+                return View();
+            }
+            return View();
         }
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
