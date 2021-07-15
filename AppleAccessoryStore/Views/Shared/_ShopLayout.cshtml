@@ -78,14 +78,20 @@
                     <ul id="topMenu" class="nav pull-right">
                         <li class=""><a asp-controller="Product" asp-action="Index">Products</a></li>
                         @if (userName != null)
-                        {
-                            <li class="">
-                                <a asp-controller="User" asp-action="Profile" asp-route-userId="@userId">User</a>
-                            </li>
-                            <li class="">
-                                <a asp-controller="User" asp-action="Logout" role="button" style="padding-right:0"><span class="btn btn-large btn-success">Log Out</span></a>
-                            </li>
-                        }
+                        {@if (role.Trim() == "AD")
+                            {
+                                <li class="">
+                                    <a asp-controller="Product" asp-action="Create" >Add Product</a>
+                                </li>
+                            }
+                        <li class="">
+                            <a asp-controller="User" asp-action="Profile" asp-route-userId="@userId">User</a>
+                        </li>
+                        <li class="">
+                            <a asp-controller="User" asp-action="Logout" role="button" style="padding-right:0"><span class="btn btn-large btn-success">Log Out</span></a>
+                        </li>
+
+                    }
                         @if (userName == null)
                         {
                             <li class="">

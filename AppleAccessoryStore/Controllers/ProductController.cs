@@ -186,15 +186,15 @@ namespace AppleAccessoryStore.Controllers
                 {
                     productRepository.InsertProduct(product);
                 }
-                long size = files.Sum(f => f.Length);
-
+                var size = files.Sum(f => f.Length);
+                var filePaths = new List<string>();
                 foreach (var formFile in files)
                 {
                     if (formFile.Length > 0)
                     {
-                        var filePath = "~/image/";
-
-                        using (var stream = System.IO.File.Create(filePath))
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/image/"+formFile.FileName);
+                        filePaths.Add(filePath);
+                        using (var stream = new FileStream(filePath,FileMode.Create))
                         {
                             await formFile.CopyToAsync(stream);
                         }
