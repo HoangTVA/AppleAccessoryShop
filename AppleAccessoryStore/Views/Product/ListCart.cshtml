@@ -1,0 +1,85 @@
+﻿@{
+        ViewData["Title"] = "ListCart";
+        Layout = "~/Views/Shared/_ShopLayout.cshtml";
+}
+    <ul class="breadcrumb">
+        <li><a asp-action="Index" asp-controller="Home">Home</a> <span class="divider">/</span></li>
+        <li class="active"> SHOPPING CART</li>
+    </ul>
+    <h3> SHOPPING CART [ <small>3 Item(s) </small>]<a asp-action="ProductList" asp-controller="Product" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>
+    <hr class="soft" />
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ decimal TotalPrice = 0; }
+            @foreach (var item in ViewBag.carts)
+            {
+                decimal total = item.product.ProductPrice * item.quantity;
+                TotalPrice = TotalPrice + total;
+            <tr>
+                <td> <img width="60" src="~/image/@item.product.ProductImage" alt="" /></td>
+                <td>@item.product.ProductName</td>
+                <td>
+                    <div class="input-append">
+                        <div class="input-append">
+                            <input class="span1" style="max-width:34px" placeholder="2" size="16" type="text" value="@item.quantity">
+                            <a asp-controller="Product" asp-action="deleteCart" asp-route-id="@item.product.ProductId">
+                                <button class="btn btn-danger" type="button">
+                                    <i class="icon-remove icon-white"></i>
+                                </button>
+                            </a>
+                        </div>
+                </td>
+                <td>@item.product.ProductPrice VND</td>
+                <td>@total VND</td>
+            </tr>
+            }
+        <tr>
+            <td colspan="5" style="text-align:right"><strong>TOTAL =</strong></td>
+            <td class="label label-important" style="display:block"> <strong> @TotalPrice VND </strong></td>
+        </tr>
+        </tbody>
+        <a asp-action="Buy">Buy</a>
+    </table>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>SHIPPING ADDRESS</th>
+        </tr>
+        <tr>
+            <td>
+                <form class="form-horizontal">
+
+                    <div class="control-group">
+                        <label class="control-label" for="">Your shipping address </label>
+                        <div class="controls">
+                            <input type="text" id="inputAddress" placeholder="123, A Street, District 2">
+                        </div>
+                    </div>
+
+                    <div class="control-group" style="margin-left: -10rem;">
+                        <div class="controls">
+                            <label class="radio">
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                Pay after delivery (Using the billing address above as shipping address)
+                                <br />
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" checked="">
+                                Pay at SE15 Shop
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <a href="products.html" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
+    <a href="order_summary.html" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
