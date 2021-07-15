@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessObject;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace AppleAccessoryStore.Controllers
 {
@@ -15,7 +16,14 @@ namespace AppleAccessoryStore.Controllers
     public class ProductController : Controller
     {
         IProductRepository productRepository = null;
-        public ProductController() => productRepository = new ProductRepository();
+        IOrderRepository orderRepository = null;
+        IOrderDetailRepository detailRepository = null;
+        public ProductController()
+        {
+            productRepository = new ProductRepository();
+            orderRepository = new OrderRepository();
+            detailRepository = new OrderDetailRepository();
+        }
         // GET: ProductController
         public ActionResult Index()
         {
@@ -28,6 +36,122 @@ namespace AppleAccessoryStore.Controllers
             
         }
 
+        public IActionResult addCart(int id)
+        {
+            var cart = HttpContext.Session.GetString("cart");//get key cart
+            if (cart == null)
+            {
+                var product = productRepository.GetProductById(id);
+                List<Cart> listCart = new List<Cart>()
+               {
+                   new Cart
+                   {
+                       product = product,
+                       quantity = 1
+                   }
+               };
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(listCart));
+
+            }
+            else
+            {
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                bool check = true;
+                for (int i = 0; i < dataCart.Count; i++)
+                {
+                    if (dataCart[i].product.ProductId == id)
+                    {
+                        dataCart[i].quantity++;
+                        check = false;
+                    }
+                }
+                if (check)
+                {
+                    dataCart.Add(new Cart
+                    {
+                        product = productRepository.GetProductById(id),
+                        quantity = 1
+                    });
+                }
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
+                // var cart2 = HttpContext.Session.GetString("cart");//get key cart
+                //  return Json(cart2);
+            }
+
+            return RedirectToAction(nameof(ListCart));
+
+        }
+
+        public IActionResult ListCart()
+        {
+            var cart = HttpContext.Session.GetString("cart");//get key cart
+            if (cart != null)
+            {
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                if (dataCart.Count > 0)
+                {
+                    ViewBag.carts = dataCart;
+                    return View();
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult deleteCart(int id)
+        {
+            var cart = HttpContext.Session.GetString("cart");
+            if (cart != null)
+            {
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+
+                for (int i = 0; i < dataCart.Count; i++)
+                {
+                    if (dataCart[i].product.ProductId == id)
+                    {
+                        dataCart.RemoveAt(i);
+                    }
+                }
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
+                return RedirectToAction(nameof(ListCart));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Buy()
+        {
+            var cart = HttpContext.Session.GetString("cart");
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            if (cart != null)
+            {
+                int orderCount = orderRepository.GetOrders().Count() + 1;
+                TblOrder order = new TblOrder
+                {
+                    OrderId = orderCount,
+                    UserId = userId,
+                    OrderDate = DateTime.Now,
+                    Total = 30
+                };
+                orderRepository.AddOrder(order);
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                for (int i = 0; i < dataCart.Count; i++)
+                {
+                    TblOrderDetail details = new TblOrderDetail
+                    {
+                        OrderId = orderCount,
+                        ProductId = dataCart[i].product.ProductId,
+                        UnitPrice = (dataCart[i].product.ProductPrice * dataCart[i].quantity),
+                        Quantity = dataCart[i].quantity
+                    };
+                    detailRepository.addDetail(details);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {

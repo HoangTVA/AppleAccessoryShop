@@ -28,7 +28,7 @@ namespace AppleAccessoryStore.Controllers
                 TblUser User = userRepository.Login(user.UserEmail, user.UserPassword);
                 if (User != null)
                 {
-                    HttpContext.Session.SetString("userId", User.UserId.ToString());
+                    HttpContext.Session.SetInt32("userId", User.UserId);
                     HttpContext.Session.SetString("userName", User.UserEmail.ToString());
                     HttpContext.Session.SetString("Role", User.RoleId.ToString());
                     return RedirectToAction("Index", "Home");
