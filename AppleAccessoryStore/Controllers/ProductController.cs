@@ -33,7 +33,7 @@ namespace AppleAccessoryStore.Controllers
         public ActionResult Index(int pg=1)
         {
             var productList = productRepository.GetProducts();
-            const int pageSize = 8;
+            const int pageSize = 3;
             if (pg < 1)
                 pg = 1;
             int rescCount = productList.Count();
