@@ -80,7 +80,7 @@
                         <li class=""><a asp-controller="Product" asp-action="Index">Products</a></li>
                         @if (userName != null)
                         {@if (role.Trim() == "AD")
-                            {
+                            { // option cua admin
                                 <li class="">
                                     <a asp-controller="Product" asp-action="Create">Add Product</a>
                                 </li>
@@ -89,9 +89,16 @@
                                 </li>
                             }
 
+                            else //option cua user
+                            {
+                                <li class="">
+                                    <a asp-controller="Order" asp-action="OrderList">OrderList</a>
+                                </li>
+                            }
                         <li class="">
                             <a asp-controller="User" asp-action="Profile" asp-route-userId="@userId">User</a>
                         </li>
+
                         <li class="">
                             <a asp-controller="User" asp-action="Logout" role="button" style="padding-right:0"><span class="btn btn-large btn-success">Log Out</span></a>
                         </li>

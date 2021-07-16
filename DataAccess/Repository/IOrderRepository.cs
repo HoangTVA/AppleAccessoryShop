@@ -10,8 +10,10 @@ namespace DataAccess.Repository
     public interface IOrderRepository
     {
         IEnumerable<TblOrder> GetOrders();
+        IEnumerable<TblOrder> GetOrderByuID(int uID);
         void AddOrder(TblOrder order);
 
          TblOrder GetOrderById(int oID);
+        
     }
 }

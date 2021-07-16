@@ -13,6 +13,8 @@ namespace DataAccess.Repository
         public void AddOrder(TblOrder or) => OrderDAO.Instance.AddNew(or);
 
         TblOrder IOrderRepository.GetOrderById(int oID) => OrderDAO.Instance.GetOrderByID(oID);
-      
+
+        public IEnumerable<TblOrder> GetOrderByuID(int uID) => OrderDAO.Instance.GetOrderByUser(uID);
+        
     }
 }
