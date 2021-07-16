@@ -19,6 +19,17 @@
 <ul class="breadcrumb">
     <li class="active">Home</li>
 </ul>
+<form class="form-horizontal span6">
+    <div class="control-group">
+        <label class="control-label alignL">Sort By </label>
+        <select>
+            <option>Product name A - Z</option>
+            <option>Product name Z - A</option>
+            <option>Product Stoke</option>
+            <option>Price Lowest first</option>
+        </select>
+    </div>
+</form>
 <br class="clr" />
 <div class="tab-content">
     <div class="tab-pane  active" id="blockView">
@@ -29,14 +40,14 @@
                 {
                     <li class="span3">
                         <div class="thumbnail">
-                            <a asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId"><img src="~/image/@pro.ProductImage" alt="" /></a>
+                            <a href="product_details.html"><img src="~/image/@pro.ProductImage" alt="" /></a>
                             <div class="caption">
                                 <h5>@pro.ProductName</h5>
                                 <p>
                                     @pro.ProductPrice
                                 </p>
                                 <h4 style="text-align:center">
-                                    <a class="btn" asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId"> <i class="icon-zoom-in"></i></a> <a class="btn" asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId">Add to <i class="icon-shopping-cart"></i></a>
+                                    <a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId">Add to <i class="icon-shopping-cart"></i></a>
                                 </h4>
                             </div>
                         </div>
