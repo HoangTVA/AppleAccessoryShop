@@ -47,7 +47,7 @@
             <div class="control-group">
                 <div class="controls">
                     <a asp-controller="User" asp-action="Edit" asp-route-userId="@Model.UserId" role="button" style="padding-right:0"><span class="btn btn-primary btn-success">Change Email and Password</span></a>
-                    <a href="order_history.html" role="button" style="padding-right:0"><span class="btn btn-primary btn-info">Order History</span></a>
+                    <a asp-controller="Order" asp-action="OrderList" role="button" style="padding-right:0"><span class="btn btn-primary btn-info">Order History</span></a>
                 </div>
             </div>
         </fieldset>

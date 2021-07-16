@@ -46,6 +46,10 @@ namespace DataAccess
             {
                 using var context = new Apple_Accessory_StoreContext();
                 com = context.TblComments.Where(m => m.ProductId == pID).ToList();
+                foreach (TblComment co in com)
+                {
+                    co.User = context.TblUsers.SingleOrDefault(u => u.UserId == co.UserId);
+                }
             }
             catch (Exception ex)
             {

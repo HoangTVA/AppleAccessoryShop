@@ -10,6 +10,7 @@ using BusinessObject;
 using System.Web;
 using Newtonsoft.Json;
 using AppleAccessoryStore.Models;
+using System.Dynamic;
 
 namespace AppleAccessoryStore.Controllers
 {
@@ -232,12 +233,14 @@ namespace AppleAccessoryStore.Controllers
             {
                 return NotFound();
             }
-            var product = productRepository.GetProductById(id.Value);
-            if(product == null)
+            dynamic myModel = new ExpandoObject();
+            myModel.product = productRepository.GetProductById(id.Value);
+            myModel.comments = commentRepository.GetCommentsByProduct(id.Value);
+            if(myModel == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(myModel);
         }
 
         // GET: ProductController/Create
