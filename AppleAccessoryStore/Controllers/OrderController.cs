@@ -25,21 +25,30 @@ namespace AppleAccessoryStore.Controllers
         }
         public ActionResult OrderList()
         {
+            try
+            {
+                string roleID = HttpContext.Session.GetString("Role").Trim();
+                if (roleID == "AD")
+                {
+                    var orderList = orderRepository.GetOrders();
+                    return View(orderList);
+                }
+                else
+                {
 
-            string roleID = HttpContext.Session.GetString("Role").Trim();
-            if (roleID == "AD")
-            {
-                var orderList = orderRepository.GetOrders();
-                return View(orderList);
-            }
-            else
-            {
-               
                     int userID = HttpContext.Session.GetInt32("userId").Value;
                     var orderList = orderRepository.GetOrderByuID(userID);
                     return View(orderList);
+                }
             }
-            return View();
+            catch (Exception e)
+            {
+
+
+                return View();
+            }
+          
+     
         }
         public ActionResult getListById(int? postUID)
         {

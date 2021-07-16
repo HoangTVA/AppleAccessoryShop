@@ -1,0 +1,75 @@
+﻿
+
+@{
+    ViewData["Title"] = "AdminUserList";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+}
+
+@model IEnumerable<BusinessObject.TblUser>
+<h1>UserList</h1>
+
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <ul class="breadcrumb">
+                <li><a asp-controller="Product" asp-action="Index">Home</a> <span class="divider">/</span></li>
+                <li class="active">User Manager</li>
+            </ul>
+            <div class="row">
+                <div class="span12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><span>User ID</span></th>
+                                <th>User Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0)
+                            {
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+
+                                        <td>@item.UserId</td>
+
+                                        <td>@item.UserEmail</td>
+                                        <td>
+                                            <li class="">
+                                                <a asp-controller="Order" asp-action="getListById"
+                                                   asp-route-postUID="@item.UserId" class="btn btn-info">OrderList</a>
+                                            </li>
+                                        </td>
+
+                                    </tr>
+
+                                }
+                            }
+                            else
+                            {
+                                <h2>Currently no user</h2>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <ul>
+                    <li><a href="#">&lsaquo;</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">...</a></li>
+                    <li><a href="#">&rsaquo;</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+

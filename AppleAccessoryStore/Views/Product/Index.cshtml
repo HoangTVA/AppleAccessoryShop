@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_ShopLayout.cshtml";
     Pager pager = new Pager();
     int pageNo = 0;
-    if(ViewBag.Pager != null)
+    if (ViewBag.Pager != null)
     {
         pager = ViewBag.Pager;
         pageNo = pager.Currentpage;
@@ -11,13 +11,6 @@
 }
 
 @model IEnumerable<BusinessObject.TblProduct>
-
-
-    <form action="/Product/Search" method="post">
-        <p>
-            Title: <input id="SearchString" name="SearchString" type="text" value="" /> <input type="submit" value="Filter" />
-        </p>
-    </form>
 <!--<ul class="list-group shadow">-->
 <!-- list group item-->
 <!--<li class="list-group-item">-->
@@ -51,13 +44,13 @@
         <p>t@ViewBag.Message</p>
     }
 </div>-->
- <!-- End -->
+<!-- End -->
 <!--</li>--> <!-- End -->
 <!--</ul>-->
 <ul class="breadcrumb">
     <li class="active">Home</li>
 </ul>
-<form class="form-horizontal span6">
+<!--<form class="form-horizontal span6">
     <div class="control-group">
         <label class="control-label alignL">Sort By </label>
         <select>
@@ -67,31 +60,38 @@
             <option>Price Lowest first</option>
         </select>
     </div>
-</form>
+</form>-->
+
 <br class="clr" />
 <div class="tab-content">
     <div class="tab-pane  active" id="blockView">
         <ul class="thumbnails" id="myUL">
-            @if(Model.Count() > 0) { 
-            @foreach (var pro in Model)
+            @if (Model.Count() > 0)
             {
-                <li class="span3">
-                    <div class="thumbnail">
-                        <a href="product_details.html"><img src="~/image/@pro.ProductImage" alt="" /></a>
-                        <div class="caption">
-                            <h5>@pro.ProductName</h5>
-                            <p>
-                                @pro.ProductPrice
-                            </p>
-                            <h4 style="text-align:center">
-                              <a asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId">Details</a>
-                                <a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId">Add to <i class="icon-shopping-cart"></i></a>
-                            </h4>
+                @foreach (var pro in Model)
+                {
+                    <li class="span3">
+                        <div class="thumbnail">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId"><img src="~/image/@pro.ProductImage" alt="" /></a>
+                            <div class="caption">
+                                <h5>@pro.ProductName</h5>
+                                <p>
+                                    @pro.ProductPrice
+                                </p>
+                                <h4 style="text-align:center">
+                                  
+                                    <a class="btn"  asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId"> 
+                                        <i class="icon-zoom-in"></i></a> <a class="btn" asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId">
+                                        Add to 
+                                        <i class="icon-shopping-cart"></i></a>
+                                </h4>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                }
             }
-            }else{
+            else
+            {
                 <h2>Product List null</h2>
             }
         </ul>
@@ -100,35 +100,35 @@
             {
 
 
-            <ul>
-                
-                @if (pager.Currentpage > 1)
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="1">First</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.Currentpage -1)">Previous</a>
-                    </li>
-                }
-                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                {
+                <ul>
 
-                    <li class="page-item @(pge==pager.Currentpage? "active" :"")">
-                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@pge">@pge</a>
-                    </li>
-                }
-                @if (pager.Currentpage < pager.EndPage)
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@pager.EndPage">Last</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.Currentpage + 1)">Next</a>
-                    </li>
-                }
+                    @if (pager.Currentpage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.Currentpage -1)">Previous</a>
+                        </li>
+                    }
+                    @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                    {
 
-            </ul>
+                        <li class="page-item @(pge==pager.Currentpage? "active" :"")">
+                            <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                        </li>
+                    }
+                    @if (pager.Currentpage < pager.EndPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@pager.EndPage">Last</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.Currentpage + 1)">Next</a>
+                        </li>
+                    }
+
+                </ul>
             }
 
         </div>

@@ -30,14 +30,23 @@ namespace AppleAccessoryStore.Controllers
             if (ModelState.IsValid)
             {
                 TblUser User = userRepository.Login(user.UserEmail, user.UserPassword);
-                if (User != null)
+               
+                if (User != null  )
                 {
-                    HttpContext.Session.SetString("UserID", user.UserId.ToString());
-                    HttpContext.Session.SetInt32("userId", User.UserId);
-                    HttpContext.Session.SetString("userName", User.UserEmail.ToString());
-                    HttpContext.Session.SetString("Role", User.RoleId.ToString());
-                    return RedirectToAction("Index", "Product");
+                    if (!User.RoleId.Trim().Equals("BAN")) {
+                        HttpContext.Session.SetString("UserID", user.UserId.ToString());
+                        HttpContext.Session.SetInt32("userId", User.UserId);
+                        HttpContext.Session.SetString("userName", User.UserEmail.ToString());
+                        HttpContext.Session.SetString("Role", User.RoleId.ToString());
+                        return RedirectToAction("Index", "Product");
+                    }
+                    else {
+                        ViewBag.Message = "Your account was banned from the system";
+                        return View();
+                    }
+                    
                 }
+             
             }
             ViewBag.Message = "Wrong email or password";
             return View(user);
@@ -86,6 +95,11 @@ namespace AppleAccessoryStore.Controllers
             user.RoleId = "BAN";
             userRepository.UpdateUser(user);
             return RedirectToAction(nameof(Index));
+        }
+        public ActionResult AdminUserList()
+        {
+            var userList = userRepository.GetUsers();
+            return View(userList);
         }
 
         public ActionResult Logout()
