@@ -94,7 +94,7 @@ namespace AppleAccessoryStore.Controllers
             var user = userRepository.GetUserById(userID.Value);
             user.RoleId = "BAN";
             userRepository.UpdateUser(user);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AdminUserList));
         }
         public ActionResult AdminUserList()
         {

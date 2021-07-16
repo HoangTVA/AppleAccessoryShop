@@ -32,6 +32,10 @@ namespace DataAccess
             {
                 using var context = new Apple_Accessory_StoreContext();
                 users = context.TblUsers.ToList();
+                foreach (var item in users)
+                {
+                    item.Role = context.TblRoles.SingleOrDefault(u => u.RoleId == item.RoleId);
+                }
             }
             catch (Exception ex)
             {

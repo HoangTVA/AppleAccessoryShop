@@ -23,6 +23,7 @@
                             <tr>
                                 <th><span>User ID</span></th>
                                 <th>User Email</th>
+                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -37,11 +38,17 @@
                                         <td>@item.UserId</td>
 
                                         <td>@item.UserEmail</td>
+                                        <td>@item.Role.RoleName</td>
                                         <td>
-                                            <li class="">
-                                                <a asp-controller="Order" asp-action="getListById"
-                                                   asp-route-postUID="@item.UserId" class="btn btn-info">OrderList</a>
-                                            </li>
+                                            <ul style="list-style:none; display:inline;">
+                                                <li class="">
+                                                    <a asp-controller="Order" asp-action="getListById"
+                                                       asp-route-postUID="@item.UserId" class="btn btn-info">OrderList</a>
+                                                </li>
+                                                <li class="">
+                                                    <a onclick="return confirm('Are you sure?This user will be permanent ban')" asp-controller="User" asp-action="BanUser" asp-route-userID="@item.UserId" role="button" class="btn btn-danger">Ban this user</a>
+                                                </li>
+                                            </ul>
                                         </td>
 
                                     </tr>
@@ -57,17 +64,7 @@
                 </div>
             </div>
 
-            <div class="pagination">
-                <ul>
-                    <li><a href="#">&lsaquo;</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">...</a></li>
-                    <li><a href="#">&rsaquo;</a></li>
-                </ul>
-            </div>
+            
         </div>
     </div>
 </div>
