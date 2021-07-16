@@ -14,6 +14,10 @@ namespace AppleAccessoryStore.Controllers
         IUserRepository userRepository = null;
         public UserController() => userRepository = new UserRepository();
         // GET: UserController
+        public ActionResult Index()
+        {
+            return View();
+        }
         public ActionResult Login()
         {
             return View();
@@ -75,6 +79,13 @@ namespace AppleAccessoryStore.Controllers
                 ViewBag.Message = ex.Message;
                 return View(user);
             }
+        }
+        public ActionResult BanUser(int? userID)
+        {
+            var user = userRepository.GetUserById(userID.Value);
+            user.RoleId = "BAN";
+            userRepository.UpdateUser(user);
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Logout()

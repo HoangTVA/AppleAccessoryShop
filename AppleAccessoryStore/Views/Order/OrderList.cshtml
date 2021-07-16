@@ -16,11 +16,13 @@
             </ul>
             <div class="row">
                 <div class="span12">
+                    @if (ViewBag.user != "no")
+                    {
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th><span>Created</span></th>
-                                <th>Order ID</th>                               
+                                <th>Order ID</th>
                                 <th><span> Total Price</span></th>
                                 <th>Action</th>
                             </tr>
@@ -30,36 +32,45 @@
                             {
                                 @foreach (var item in Model)
                                 {
-                         
-                            <tr>
-                              
-                                    <td>@item.OrderDate</td>
 
-                                    <td>@item.OrderId</td>
+                                    <tr>
 
-                                    <td>
-                                        @item.Total
-                                    </td>
-                                    <td>
-                                        <a asp-controller="Order" asp-route-Id="@item.OrderId" asp-action="Details" class="btn btn-info">Detail</a>
+                                        <td>@item.OrderDate</td>
+
+                                        <td>@item.OrderId</td>
+
+                                        <td>
+                                            @item.Total
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Order" asp-route-Id="@item.OrderId" asp-action="Details" class="btn btn-info">Detail</a>
                                             <a href="order_details.html" class="table-link text-info" title="More Detail">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                    </td>
-                                
-                            </tr>
-                                    
+                                        </td>
+
+                                    </tr>
+
                                 }
                             }
                             else
                             {
                                 <h2>Currently no order</h2>
                             }
+
+
+
                         </tbody>
                     </table>
+                    }
+                    else
+            {
+                <h2 style="text-align:center">You must login to see order</h2>
+            }
+                <h2 style="text-align:center">@ViewBag.NotLogIn</h2>
                 </div>
             </div>
 
@@ -77,5 +88,5 @@
         </div>
     </div>
 </div>
-    
+
 
