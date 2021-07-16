@@ -1,65 +1,101 @@
-﻿@model IEnumerable<BusinessObject.TblProduct>
-
-@{
-    ViewData["Title"] = "SearchProduct";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@{
+    ViewData["Title"] = "Search Product List";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    string searchString = "";
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.Currentpage;
+    }
+    if (ViewBag.SearchString != null)
+    {
+        searchString = ViewBag.SearchString;
+    }
 }
 
-<h1>SearchProduct</h1>
+@model IEnumerable<BusinessObject.TblProduct>
+<ul class="breadcrumb">
+    <li class="active">Home</li>
+</ul>
+<form class="form-horizontal span6">
+    <div class="control-group">
+        <label class="control-label alignL">Sort By </label>
+        <select>
+            <option>Product name A - Z</option>
+            <option>Product name Z - A</option>
+            <option>Product Stoke</option>
+            <option>Price Lowest first</option>
+        </select>
+    </div>
+</form>
+<br class="clr" />
+<div class="tab-content">
+    <div class="tab-pane  active" id="blockView">
+        <ul class="thumbnails" id="myUL">
+            @if (Model.Count() > 0)
+            {
+                @foreach (var pro in Model)
+                {
+                    <li class="span3">
+                        <div class="thumbnail">
+                            <a href="product_details.html"><img src="~/image/@pro.ProductImage" alt="" /></a>
+                            <div class="caption">
+                                <h5>@pro.ProductName</h5>
+                                <p>
+                                    @pro.ProductPrice
+                                </p>
+                                <h4 style="text-align:center">
+                                    <a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId">Add to <i class="icon-shopping-cart"></i></a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <h2>Product List null</h2>
+            }
+        </ul>
+        <div class="pagination">
+            @if (pager.TotalPages > 0)
+            {
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitInStock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductImage)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitInStock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CommentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductImage)
-            </td>
-            <td>
-                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-controller="Product" asp-action="addCart" asp-route-id="@item.ProductId" class="addProduct">Add order</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+                <ul>
+
+                    @if (pager.Currentpage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@(pager.Currentpage -1)">Previous</a>
+                        </li>
+                    }
+                    @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                    {
+
+                        <li class="page-item @(pge==pager.Currentpage? "active" :"")">
+                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@pge">@pge</a>
+                        </li>
+                    }
+                    @if (pager.Currentpage < pager.EndPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@pager.EndPage">Last</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@(pager.Currentpage + 1)">Next</a>
+                        </li>
+                    }
+
+                </ul>
+            }
+
+        </div>
+        <hr class="soft" />
+    </div>
+</div>

@@ -13,6 +13,6 @@ namespace BusinessObject
         public int? UnitInStock { get; set; }
         public int? CommentId { get; set; }
         public string ProductImage { get; set; }
-        public virtual TblComment Comment { get; set; }
+        public virtual IEnumerable<TblComment> TblComments { get; set; }
     }
 }

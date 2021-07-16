@@ -72,8 +72,8 @@
                 </a>
                 <div class="navbar-inner">
                     <a class="brand" style="text-decoration: none; color: rgb(179, 179, 179);" asp-controller="Home" asp-action="Index">Good Accessories</a>
-                    <form class="form-inline navbar-search" method="post" action="products.html">
-                        <input id="srchFld" class="srchTxt" type="text" />
+                    <form class="form-inline navbar-search" method="post" asp-controller="Product" asp-action="Search">
+                        <input id="srchFld" class="srchTxt" type="text" name="searchString"/>
                         <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
                     </form>
                     <ul id="topMenu" class="nav pull-right">
