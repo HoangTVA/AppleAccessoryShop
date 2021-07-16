@@ -19,17 +19,7 @@
 <ul class="breadcrumb">
     <li class="active">Home</li>
 </ul>
-<form class="form-horizontal span6">
-    <div class="control-group">
-        <label class="control-label alignL">Sort By </label>
-        <select>
-            <option>Product name A - Z</option>
-            <option>Product name Z - A</option>
-            <option>Product Stoke</option>
-            <option>Price Lowest first</option>
-        </select>
-    </div>
-</form>
+
 <br class="clr" />
 <div class="tab-content">
     <div class="tab-pane  active" id="blockView">
@@ -59,43 +49,45 @@
                 <h2>Product List null</h2>
             }
         </ul>
-        <div class="pagination">
-            @if (pager.TotalPages > 0)
+
+    </div>
+
+</div>
+<div class="pagination" style="transform:translateX(50%)">
+    @if (pager.TotalPages > 0)
+    {
+
+
+        <ul>
+
+            @if (pager.Currentpage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@(pager.Currentpage -1)">Previous</a>
+                </li>
+            }
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
             {
 
-
-                <ul>
-
-                    @if (pager.Currentpage > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="1">First</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@(pager.Currentpage -1)">Previous</a>
-                        </li>
-                    }
-                    @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                    {
-
-                        <li class="page-item @(pge==pager.Currentpage? "active" :"")">
-                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@pge">@pge</a>
-                        </li>
-                    }
-                    @if (pager.Currentpage < pager.EndPage)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@pager.EndPage">Last</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@(pager.Currentpage + 1)">Next</a>
-                        </li>
-                    }
-
-                </ul>
+                <li class="page-item @(pge==pager.Currentpage? "active" :"")">
+                    <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+            @if (pager.Currentpage < pager.EndPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@pager.EndPage">Last</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Product" asp-action="Search" asp-route-searchString="@searchString" asp-route-pg="@(pager.Currentpage + 1)">Next</a>
+                </li>
             }
 
-        </div>
-        <hr class="soft" />
-    </div>
+        </ul>
+    }
+
 </div>
+<hr class="soft" />

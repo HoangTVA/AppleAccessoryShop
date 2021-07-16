@@ -51,5 +51,45 @@
 </div>
 
 @section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+
+            $('input[type=file]').on('change', function () {
+
+                var filePath = $('#FileUpload').val();
+
+                if (filePath) {
+                    var startIndex = (filePath.indexOf("\\") >= 0 ? filePath.lastIndexOf("\\") : filePath.lastIndexOf("/"));
+                    var filename = filePath.substring(startIndex);
+                    if (filename.indexOf("\\") === 0 || filename.indexOf("/") === 0) {
+                        filename = filename.substring(1);
+                    }
+
+                    var imgName = $('#proImg').val(filename);
+
+                }
+
+            });
+            async function AJAXSubmit(oFormElement) {
+                var resultElement = oFormElement.elements.namedItem("result");
+                const formData = new FormData(oFormElement);
+
+                try {
+                    const response = await fetch(oFormElement.action, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/';
+                    }
+
+                    resultElement.value = 'Result: ' + response.status + ' ' +
+                        response.statusText;
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

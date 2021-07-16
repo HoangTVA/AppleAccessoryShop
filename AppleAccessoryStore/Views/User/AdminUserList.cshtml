@@ -40,10 +40,10 @@
                                         <td>@item.UserEmail</td>
                                         <td>@item.Role.RoleName</td>
                                         <td>
-                                            <ul style="list-style:none; display:inline;">
+                                            <ul style="list-style:none; display:inline-block;">
                                                 <li class="">
                                                     <a asp-controller="Order" asp-action="getListById"
-                                                       asp-route-postUID="@item.UserId" class="btn btn-info">OrderList</a>
+                                                       asp-route-postUID="@item.UserId" class="btn btn-info">Order List</a>
                                                 </li>
                                                 <li class="">
                                                     <a onclick="return confirm('Are you sure?This user will be permanent ban')" asp-controller="User" asp-action="BanUser" asp-route-userID="@item.UserId" role="button" class="btn btn-danger">Ban this user</a>

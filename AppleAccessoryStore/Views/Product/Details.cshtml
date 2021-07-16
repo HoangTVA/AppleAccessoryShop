@@ -23,21 +23,22 @@
     </div>
     <div class="span8">
         <h3>@product.ProductName</h3>
+        @if (role != null)
+        {
+            if (role.Trim().Equals("AD"))
+            {
+                <a class="btn btn-info" asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId">Edit product</a>
+            }
+        }
         <hr class="soft" />
         <form class="form-horizontal qtyFrm">
             <div class="control-group">
                 <label class="control-label"><span>@product.ProductPrice VND</span></label>
+
                 <div class="controls">
                     <input type="number" class="span1" placeholder="Qty." />
-                    @if (role != null)
-                    {
-                        if (role.Trim().Equals("AD"))
-                        {
-                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId">Edit</a>
-                        }
-                    }
+
                     <button asp-controller="Product" asp-action="addCart" asp-route-id="@product.ProductId" type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
-                    <a asp-controller="Product" asp-action="Index">Back to list</a>
                 </div>
             </div>
         </form>

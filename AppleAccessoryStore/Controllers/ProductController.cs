@@ -45,6 +45,7 @@ namespace AppleAccessoryStore.Controllers
                 ViewBag.Message = "No product in store";
             }
             ViewBag.Pager = pager;
+          
             return View(data);
             
         }
@@ -140,6 +141,7 @@ namespace AppleAccessoryStore.Controllers
                     return View();
                 }
             }
+            
             return RedirectToAction(nameof(Index));
         }
 
@@ -285,27 +287,7 @@ namespace AppleAccessoryStore.Controllers
                 return View();
             }
         }
-        /*[HttpPost("FileUpload")]
-        public async Task<IActionResult> Create(List<IFormFile> files)
-        {
-            long size = files.Sum(f => f.Length);
-            var filePaths = new List<string>();
-            foreach (var formFile in files)
-            {
-                if (formFile.Length > 0)
-                {
-                    var filePath = "~/image/";
-                    filePaths.Add(filePath);
-                    using (var stream = new FileStream(filePath,FileMode.Create))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
-                }
-            }
-            return Ok(new { files.Count, size, filePaths });
-        }
-        */
-        // GET: ProductController/Edit/5
+    
         public ActionResult Edit(int? id)
         {
             if (id == null)

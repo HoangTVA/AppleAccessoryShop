@@ -26,7 +26,7 @@ namespace AppleAccessoryStore.Controllers
         public ActionResult OrderList()
         {
             try
-            {
+            {   if (HttpContext.Session.GetString("Role") == null) throw new Exception("You must login to access this page");
                 string roleID = HttpContext.Session.GetString("Role").Trim();
                 if (roleID == "AD")
                 {
@@ -44,7 +44,7 @@ namespace AppleAccessoryStore.Controllers
             catch (Exception e)
             {
 
-
+                ViewBag.Message = e.Message;
                 return View();
             }
           
