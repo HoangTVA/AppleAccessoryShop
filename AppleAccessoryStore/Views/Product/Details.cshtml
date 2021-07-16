@@ -33,11 +33,11 @@
                     {
                         if (role.Trim().Equals("AD"))
                         {
-                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId">Edit</a>
+                            <button asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId">Edit</button>
                         }
                     }
                     <button asp-controller="Product" asp-action="addCart" asp-route-id="@product.ProductId" type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
-                    <a asp-controller="Product" asp-action="Index">Back to list</a>
+                    <button asp-controller="Product" asp-action="Index">Back to list</button>
                 </div>
             </div>
         </form>
