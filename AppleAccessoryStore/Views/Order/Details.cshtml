@@ -37,6 +37,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>Image</th>
                             <th>Product</th>
 
                             <th>Quantity</th>
@@ -54,6 +55,7 @@
 
 
                                     <tr>
+                                        <td><img width="100" src="~/image/@item.Product.ProductImage" alt="" /></td>
                                         <td>@item.Product.ProductName</td>
 
                                         <td>
@@ -76,7 +78,7 @@
                                         </tr>
                                     </tbody>
                 </table>
-                <a href="order_history.html" class="btn btn-large"><i class="icon-arrow-left"></i> Back </a>
+                <a asp-action="OrderList" class="btn btn-large"><i class="icon-arrow-left"></i> Back </a>
             </div>
         </div>
     </div>
