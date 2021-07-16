@@ -1,66 +1,65 @@
-﻿@model BusinessObject.TblProduct
+﻿@model dynamic
 @using Microsoft.AspNetCore.Http;
+@using BusinessObject;
 @inject IHttpContextAccessor HttpContextAccessor
-
-@{ string role = HttpContextAccessor.HttpContext.Session.GetString("Role");}
-
+@{ string role = HttpContextAccessor.HttpContext.Session.GetString("Role"); }
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
 }
+@{ 
+    TblProduct product = Model.product as TblProduct;
+    IEnumerable<TblComment> comments = Model.comments as IEnumerable<TblComment>;
+}
+<ul class="breadcrumb">
+    <li><a asp-action="Index">Home</a> <span class="divider">/</span></li>
+    <li class="active">@product.ProductName</li>
+</ul>
+<div class="row">
+    <div id="gallery" class="span4">
+        <a href="~/image/@product.ProductImage" title="Earphone 123">
+            <img src="~/image/@product.ProductImage" style="width:100%" alt="@product.ProductName" />
+        </a>
+    </div>
+    <div class="span8">
+        <h3>@product.ProductName</h3>
+        <hr class="soft" />
+        <form class="form-horizontal qtyFrm">
+            <div class="control-group">
+                <label class="control-label"><span>@product.ProductPrice VND</span></label>
+                <div class="controls">
+                    <input type="number" class="span1" placeholder="Qty." />
+                    @if (role != null)
+                    {
+                        if (role.Trim().Equals("AD"))
+                        {
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId">Edit</a>
+                        }
+                    }
+                    <button asp-controller="Product" asp-action="addCart" asp-route-id="@product.ProductId" type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+                    <a asp-controller="Product" asp-action="Index">Back to list</a>
+                </div>
+            </div>
+        </form>
 
-<h1>Details</h1>
+        <hr class="soft" />
+        <h4>@product.UnitInStock items in stock</h4>
+    </div>
+    <br />
+    <div class="span12">
+        <h3>Comments</h3>
+        <div class="" id="home">
+            <form asp-action="AddComment" asp-route-productID="@product.ProductId">
+                <h4>Add Comment</h4>
+                <input name="Comment" />
+                <button type="submit">AddComment</button>
+            </form>
+            @foreach (TblComment comment in comments)
+            {
+                <h5>User: @comment.User.UserEmail</h5>
+                <h6>@comment.Description</h6>
+            }
+        </div>
+    </div>
+</div>
 
-<div>
-    <h4>TblProduct</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductPrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UnitInStock)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UnitInStock)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommentId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommentId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductImage)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductImage)
-        </dd>
-    </dl>
-</div>
-<div>
-    @if (role != null)
-    {
-        if (role.Trim().Equals("AD"))
-        {
-            <a asp-controller="Product" asp-action="Edit" asp-route-id="@Html.ViewData.Model.ProductId">Edit</a>  
-        }
-    }
-    <a asp-action="Index">Back to List</a> |
-    <a asp-controller="Product" asp-action="addCart" asp-route-id="@Html.ViewData.Model.ProductId">Add order</a>
-</div>

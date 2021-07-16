@@ -29,7 +29,8 @@ namespace BusinessObject
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=SE150990;uid=phuchqse1;pwd=Phuc@05012001;database=Apple_Accessory_Store");
+                //optionsBuilder.UseSqlServer("Server=SE150990;uid=phuchqse1;pwd=Phuc@05012001;database=Apple_Accessory_Store");
+                optionsBuilder.UseSqlServer("Server=(local);uid=Quang;pwd=230201;database=Apple_Accessory_Store");
             }
         }
 
@@ -57,6 +58,12 @@ namespace BusinessObject
                     .WithMany(p => p.TblComments)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_tblComments_tblUsers");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.TblComments)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_tblComments_tblProducts");
+
             });
 
             modelBuilder.Entity<TblOrder>(entity =>
@@ -142,10 +149,6 @@ namespace BusinessObject
 
                 entity.Property(e => e.UnitInStock).HasColumnName("unitInStock");
 
-                entity.HasOne(d => d.Comment)
-                    .WithMany(p => p.TblProducts)
-                    .HasForeignKey(d => d.CommentId)
-                    .HasConstraintName("FK_tblProducts_tblComments");
             });
 
             modelBuilder.Entity<TblRole>(entity =>

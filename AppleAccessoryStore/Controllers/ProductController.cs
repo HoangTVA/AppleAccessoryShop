@@ -10,6 +10,7 @@ using BusinessObject;
 using System.Web;
 using Newtonsoft.Json;
 using AppleAccessoryStore.Models;
+using System.Dynamic;
 
 namespace AppleAccessoryStore.Controllers
 {
@@ -20,11 +21,13 @@ namespace AppleAccessoryStore.Controllers
         IProductRepository productRepository = null;
         IOrderRepository orderRepository = null;
         IOrderDetailRepository detailRepository = null;
+        ICommentRepository commentRepository = null;
         public ProductController()
         {
             productRepository = new ProductRepository();
             orderRepository = new OrderRepository();
             detailRepository = new OrderDetailRepository();
+            commentRepository = new CommentRepository();
         }
         // GET: ProductController
         public ActionResult Index(int pg=1)
@@ -45,6 +48,39 @@ namespace AppleAccessoryStore.Controllers
             return View(data);
             
         }
+
+        public ActionResult AddComment(string comment, int productID)
+        {
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            int comments = commentRepository.getComments().Count();
+            int id = comments + 1;
+            TblComment newComment = new TblComment
+            {
+                CommentId = id,
+                UserId = userId,
+                Description = comment,
+                ProductId = productID
+            };
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    commentRepository.AddComment(newComment);
+                    return RedirectToAction(nameof(Details), new { id = productID });
+                }
+                return RedirectToAction(nameof(Details), new { id = productID });
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
 
         public IActionResult addCart(int id)
         {
@@ -197,12 +233,14 @@ namespace AppleAccessoryStore.Controllers
             {
                 return NotFound();
             }
-            var product = productRepository.GetProductById(id.Value);
-            if(product == null)
+            dynamic myModel = new ExpandoObject();
+            myModel.product = productRepository.GetProductById(id.Value);
+            myModel.comments = commentRepository.GetCommentsByProduct(id.Value);
+            if(myModel == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(myModel);
         }
 
         // GET: ProductController/Create
@@ -270,12 +308,12 @@ namespace AppleAccessoryStore.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
             var product = productRepository.GetProductById(id.Value);
-            if(product == null)
+            if (product == null)
             {
                 return NotFound();
             }
@@ -285,11 +323,11 @@ namespace AppleAccessoryStore.Controllers
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, TblProduct product)
+        public async Task<ActionResult> Edit(int id, TblProduct product, List<IFormFile> files)
         {
             try
             {
-                if(id != product.ProductId)
+                if (id != product.ProductId)
                 {
                     return NotFound();
                 }
@@ -297,14 +335,52 @@ namespace AppleAccessoryStore.Controllers
                 {
                     productRepository.UpdateProduct(product);
                 }
+                var size = files.Sum(f => f.Length);
+                var filePaths = new List<string>();
+                foreach (var formFile in files)
+                {
+                    if (formFile.Length > 0)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/image/" + formFile.FileName);
+                        filePaths.Add(filePath);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.Message = ex.Message;
                 return View();
             }
         }
+
+        public ActionResult Search(string searchString, int pg = 1)
+        {
+            if (searchString == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var productList = productRepository.SearchProduct(searchString);
+            const int pageSize = 3;
+            if (pg < 1)
+                pg = 1;
+            int rescCount = productList.Count();
+            var pager = new Pager(rescCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = productList.Skip(recSkip).Take(pager.PageSize);
+            if (productList == null)
+            {
+                ViewBag.Message = "No product can be found";
+            }
+            ViewBag.Pager = pager;
+            ViewBag.SearchString = searchString;
+            return View(data);
+        }
+
 
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
@@ -327,20 +403,20 @@ namespace AppleAccessoryStore.Controllers
             }
         }
 
-        public ActionResult Search(string searchString)
-        {
-            if (searchString == null)
-            {
-                return NotFound();
-            }
-            var productList = productRepository.SearchProduct(searchString);
+        //public ActionResult Search(string searchString)
+        //{
+        //    if (searchString == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var productList = productRepository.SearchProduct(searchString);
 
-            if (productList == null)
-            {
-                ViewBag.Message = "No product in store";
-            }
-            return View(productList);
-        }
+        //    if (productList == null)
+        //    {
+        //        ViewBag.Message = "No product in store";
+        //    }
+        //    return View(productList);
+        //}
 
         /*public ActionResult Search(string id)
         {
