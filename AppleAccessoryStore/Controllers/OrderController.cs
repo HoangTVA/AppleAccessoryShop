@@ -43,8 +43,8 @@ namespace AppleAccessoryStore.Controllers
         }
         public ActionResult getListById(int? postUID)
         {
-            int userID = HttpContext.Session.GetInt32("userId").Value;
-            var orderList = orderRepository.GetOrderByuID(userID);
+            
+            var orderList = orderRepository.GetOrderByuID(postUID.Value);
             return View("OrderList",orderList);
         }
             
