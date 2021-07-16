@@ -10,5 +10,6 @@ namespace DataAccess.Repository
     public interface IOrderDetailRepository
     {
         void addDetail(TblOrderDetail ord);
+        IEnumerable<TblOrderDetail> GetOrderDetailByOrderID(int oid);
     }
 }

@@ -11,5 +11,7 @@ namespace DataAccess.Repository
     {
         IEnumerable<TblOrder> GetOrders();
         void AddOrder(TblOrder order);
+
+         TblOrder GetOrderById(int oID);
     }
 }

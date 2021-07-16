@@ -10,5 +10,8 @@ namespace DataAccess.Repository
     public class OrderDetailRepository : IOrderDetailRepository
     {
         public void addDetail(TblOrderDetail ord) => OrderDetailDAO.Instance.AddNew(ord);
+
+        public IEnumerable<TblOrderDetail> GetOrderDetailByOrderID(int oid) => OrderDetailDAO.Instance.GetOrderDetailByOrderID(oid);
+        
     }
 }

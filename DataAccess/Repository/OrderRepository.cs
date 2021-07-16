@@ -11,5 +11,8 @@ namespace DataAccess.Repository
     {
         public IEnumerable<TblOrder> GetOrders() => OrderDAO.Instance.GetOrderList();
         public void AddOrder(TblOrder or) => OrderDAO.Instance.AddNew(or);
+
+        TblOrder IOrderRepository.GetOrderById(int oID) => OrderDAO.Instance.GetOrderByID(oID);
+      
     }
 }
