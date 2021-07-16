@@ -11,6 +11,13 @@
 }
 
 @model IEnumerable<BusinessObject.TblProduct>
+
+
+    <form action="/Product/Search" method="post">
+        <p>
+            Title: <input id="SearchString" name="SearchString" type="text" value="" /> <input type="submit" value="Filter" />
+        </p>
+    </form>
 <!--<ul class="list-group shadow">-->
 <!-- list group item-->
 <!--<li class="list-group-item">-->
@@ -77,6 +84,7 @@
                                 @pro.ProductPrice
                             </p>
                             <h4 style="text-align:center">
+                              <a asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId">Details</a>
                                 <a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId">Add to <i class="icon-shopping-cart"></i></a>
                             </h4>
                         </div>
@@ -127,3 +135,4 @@
         <hr class="soft" />
     </div>
 </div>
+

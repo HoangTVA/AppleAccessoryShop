@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace BusinessObject
+namespace AppleAccessoryStore.DataAccess
 {
     public partial class Apple_Accessory_StoreContext : DbContext
     {
@@ -29,7 +29,7 @@ namespace BusinessObject
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=SE150990;uid=phuchqse1;pwd=Phuc@05012001;database=Apple_Accessory_Store");
+                optionsBuilder.UseSqlServer("Server=(local);uid=Mem;pwd=0941767748;database=Apple_Accessory_Store");
             }
         }
 
@@ -79,10 +79,6 @@ namespace BusinessObject
 
                 entity.Property(e => e.UserId).HasColumnName("userID");
 
-                entity.Property(e => e.Address)
-                    .HasMaxLength(250)
-                    .HasColumnName("address");
-
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.TblOrders)
                     .HasForeignKey(d => d.UserId)
@@ -91,7 +87,7 @@ namespace BusinessObject
 
             modelBuilder.Entity<TblOrderDetail>(entity =>
             {
-                entity.HasKey(e => new { e.OrderId, e.ProductId });
+                entity.HasNoKey();
 
                 entity.ToTable("tblOrderDetail");
 
@@ -131,10 +127,6 @@ namespace BusinessObject
                 entity.Property(e => e.ProductName)
                     .HasMaxLength(50)
                     .HasColumnName("productName");
-
-                entity.Property(e => e.ProductImage)
-                    .HasMaxLength(50)
-                    .HasColumnName("productImage");
 
                 entity.Property(e => e.ProductPrice)
                     .HasColumnType("money")

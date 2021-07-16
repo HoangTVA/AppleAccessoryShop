@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace BusinessObject
+namespace AppleAccessoryStore.DataAccess
 {
     public partial class TblProduct
     {

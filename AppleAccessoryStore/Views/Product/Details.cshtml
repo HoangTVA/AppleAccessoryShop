@@ -1,0 +1,66 @@
+﻿@model BusinessObject.TblProduct
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{ string role = HttpContextAccessor.HttpContext.Session.GetString("Role");}
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TblProduct</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProductId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProductPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitInStock)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UnitInStock)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommentId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommentId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductImage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProductImage)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (role != null)
+    {
+        if (role.Trim().Equals("AD"))
+        {
+            <a asp-controller="Product" asp-action="Edit" asp-route-id="@Html.ViewData.Model.ProductId">Edit</a> | 
+        }
+    }
+    <a asp-action="Index">Back to List</a> |
+    <a asp-controller="Product" asp-action="addCart" asp-route-id="@Html.ViewData.Model.ProductId">Add order</a>
+</div>
