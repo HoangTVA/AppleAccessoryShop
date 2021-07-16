@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BusinessObject;
 using System.Web;
 using Newtonsoft.Json;
+using AppleAccessoryStore.Models;
 
 namespace AppleAccessoryStore.Controllers
 {
@@ -25,14 +26,22 @@ namespace AppleAccessoryStore.Controllers
             detailRepository = new OrderDetailRepository();
         }
         // GET: ProductController
-        public ActionResult Index()
+        public ActionResult Index(int pg=1)
         {
             var productList = productRepository.GetProducts();
+            const int pageSize = 3;
+            if (pg < 1)
+                pg = 1;
+            int rescCount = productList.Count();
+            var pager = new Pager(rescCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = productList.Skip(recSkip).Take(pager.PageSize);
             if (productList == null)
             {
                 ViewBag.Message = "No product in store";
             }
-            return View(productList);
+            ViewBag.Pager = pager;
+            return View(data);
             
         }
 
