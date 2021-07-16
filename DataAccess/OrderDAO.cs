@@ -53,6 +53,20 @@ namespace DataAccess
             }
             return or;
         }
+        public IEnumerable<TblOrder> GetOrderByUser(int uID)
+        {
+            IEnumerable<TblOrder> or = null;
+            try
+            {
+                using var context = new Apple_Accessory_StoreContext();
+                or = context.TblOrders.Where(m => m.UserId == uID).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return or;
+        }
         public void AddNew(TblOrder or)
         {
             try

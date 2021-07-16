@@ -14,6 +14,10 @@ namespace AppleAccessoryStore.Controllers
         IUserRepository userRepository = null;
         public UserController() => userRepository = new UserRepository();
         // GET: UserController
+        public ActionResult Index()
+        {
+            return View();
+        }
         public ActionResult Login()
         {
             return View();
@@ -28,10 +32,11 @@ namespace AppleAccessoryStore.Controllers
                 TblUser User = userRepository.Login(user.UserEmail, user.UserPassword);
                 if (User != null)
                 {
+                    HttpContext.Session.SetString("UserID", user.UserId.ToString());
                     HttpContext.Session.SetInt32("userId", User.UserId);
                     HttpContext.Session.SetString("userName", User.UserEmail.ToString());
                     HttpContext.Session.SetString("Role", User.RoleId.ToString());
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Product");
                 }
             }
             ViewBag.Message = "Wrong email or password";
@@ -74,6 +79,13 @@ namespace AppleAccessoryStore.Controllers
                 ViewBag.Message = ex.Message;
                 return View(user);
             }
+        }
+        public ActionResult BanUser(int? userID)
+        {
+            var user = userRepository.GetUserById(userID.Value);
+            user.RoleId = "BAN";
+            userRepository.UpdateUser(user);
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Logout()

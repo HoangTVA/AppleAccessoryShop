@@ -39,6 +39,7 @@ namespace DataAccess
             }
             return orderDetails;
         }
+        
         public IEnumerable<TblOrderDetail> GetOrderDetailByOrderID(int oID)
         {
             IEnumerable<TblOrderDetail> orD = null;
@@ -46,7 +47,12 @@ namespace DataAccess
             {
                 using var context = new Apple_Accessory_StoreContext();
                 orD = context.TblOrderDetails.Where(o => o.OrderId == oID).ToList();
+                foreach (var item in orD)
+                {
+                    item.Product = context.TblProducts.SingleOrDefault(o => o.ProductId == item.ProductId);
+                }
             }
+            
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);

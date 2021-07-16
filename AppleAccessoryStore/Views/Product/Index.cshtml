@@ -1,5 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Product List";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.Currentpage;
+    }
 }
 
 @model IEnumerable<BusinessObject.TblProduct>
@@ -10,40 +18,121 @@
             Title: <input id="SearchString" name="SearchString" type="text" value="" /> <input type="submit" value="Filter" />
         </p>
     </form>
-
-        <ul class="list-group shadow">
-            <!-- list group item-->
-            <li class="list-group-item">
-                <!-- Custom content-->
-                <div class="media align-items-lg-center flex-column flex-lg-row p-3">
-                    @if (Model.Count() > 0)
-                    {
-                        @foreach (var pro in Model)
-                        {@if (pro.UnitInStock > 0)
-                            {
-                                <div class="media-body order-2 order-lg-1">
-                                    <h5 class="mt-0 font-weight-bold mb-2">@pro.ProductName</h5>
-                                    <p class="font-italic text-muted mb-0 small">128 GB ROM | 15.49 cm (6.1 inch) Display 12MP Rear Camera | 7MP Front Camera A12 Bionic Chip Processor</p>
-                                    <div class="d-flex align-items-center justify-content-between mt-1">
-                                        <h6 class="font-weight-bold my-2">@pro.ProductPrice VND</h6>
-                                        <ul class="list-inline small">
-                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
-                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
-                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
-                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
-                                            <li class="list-inline-item m-0"><i class="fa fa-star-o text-gray"></i></li>
-                                        </ul>
-                                    </div>
-                                </div><img src="~/image/@pro.ProductImage" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2">
-                                <a asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId" class="addProduct">Add order</a>
-                                <a asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId">Details</a>
-                            }
-                    }
-                    }
-                    else
-                    {
-                        <p>@ViewBag.Message</p>
-                    }
-                </div> <!-- End -->
-            </li> <!-- End -->
+<!--<ul class="list-group shadow">-->
+<!-- list group item-->
+<!--<li class="list-group-item">-->
+<!-- Custom content-->
+<!--<div class="media align-items-lg-center flex-column flex-lg-row p-3">
+   t@if (Model.Count() > 0)
+    {
+        t@foreach (var pro in Model)
+        {t@if (pro.UnitInStock > 0)
+            {
+                <div class="media-body order-2 order-lg-1">
+                    <h5 class="mt-0 font-weight-bold mb-2">t@pro.ProductName</h5>
+                    <p class="font-italic text-muted mb-0 small">128 GB ROM | 15.49 cm (6.1 inch) Display 12MP Rear Camera | 7MP Front Camera A12 Bionic Chip Processor</p>
+                    <div class="d-flex align-items-center justify-content-between mt-1">
+                        <h6 class="font-weight-bold my-2">t@pro.ProductPrice VND</h6>
+                        <ul class="list-inline small">
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star-o text-gray"></i></li>
+                        </ul>
+                    </div>
+                </div><img src="~/image/t@pro.ProductImage" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2">
+                <a asp-controller="Product" asp-action="addCart" asp-route-id="t@pro.ProductId" class="addProduct">Add order</a>
+            }
+    }
+    }
+    else
+    {
+        <p>t@ViewBag.Message</p>
+    }
+</div>-->
+ <!-- End -->
+<!--</li>--> <!-- End -->
+<!--</ul>-->
+<ul class="breadcrumb">
+    <li class="active">Home</li>
+</ul>
+<form class="form-horizontal span6">
+    <div class="control-group">
+        <label class="control-label alignL">Sort By </label>
+        <select>
+            <option>Priduct name A - Z</option>
+            <option>Priduct name Z - A</option>
+            <option>Priduct Stoke</option>
+            <option>Price Lowest first</option>
+        </select>
+    </div>
+</form>
+<br class="clr" />
+<div class="tab-content">
+    <div class="tab-pane  active" id="blockView">
+        <ul class="thumbnails" id="myUL">
+            @if(Model.Count() > 0) { 
+            @foreach (var pro in Model)
+            {
+                <li class="span3">
+                    <div class="thumbnail">
+                        <a href="product_details.html"><img src="~/image/@pro.ProductImage" alt="" /></a>
+                        <div class="caption">
+                            <h5>@pro.ProductName</h5>
+                            <p>
+                                @pro.ProductPrice
+                            </p>
+                            <h4 style="text-align:center">
+                              <a asp-controller="Product" asp-action="Details" asp-route-id="@pro.ProductId">Details</a>
+                                <a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" asp-controller="Product" asp-action="addCart" asp-route-id="@pro.ProductId">Add to <i class="icon-shopping-cart"></i></a>
+                            </h4>
+                        </div>
+                    </div>
+                </li>
+            }
+            }else{
+                <h2>Product List null</h2>
+            }
         </ul>
+        <div class="pagination">
+            @if (pager.TotalPages > 0)
+            {
+
+
+            <ul>
+                
+                @if (pager.Currentpage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="1">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.Currentpage -1)">Previous</a>
+                    </li>
+                }
+                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                {
+
+                    <li class="page-item @(pge==pager.Currentpage? "active" :"")">
+                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                    </li>
+                }
+                @if (pager.Currentpage < pager.EndPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@pager.EndPage">Last</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.Currentpage + 1)">Next</a>
+                    </li>
+                }
+
+            </ul>
+            }
+
+        </div>
+        <hr class="soft" />
+    </div>
+</div>
+

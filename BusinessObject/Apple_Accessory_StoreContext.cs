@@ -79,6 +79,10 @@ namespace BusinessObject
 
                 entity.Property(e => e.UserId).HasColumnName("userID");
 
+                entity.Property(e => e.Address)
+                    .HasMaxLength(250)
+                    .HasColumnName("address");
+
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.TblOrders)
                     .HasForeignKey(d => d.UserId)

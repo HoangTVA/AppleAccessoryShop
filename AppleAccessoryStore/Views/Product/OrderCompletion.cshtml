@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "ListCart";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+}
+@{ 
+    var order = ViewBag.order;
+}
+<ul class="breadcrumb">
+    <li><a asp-action="Index" asp-controller="Product">Home</a> <span class="divider">/</span></li>
+    <li><a asp-action="Index" asp-controller="Product">Products</a> <span class="divider">/</span></li>
+    <li class="active">Receipt</li>
+</ul>
+<div class="row">
+    <div class="span12">
+        <h3>Thank you for your order!</h3>
+        <hr class="soft" />
+        <form class="form-horizontal qtyFrm">
+            <div class="">
+                <p class="small">
+                    Thank you for choosing SE15 Shop. In 15 minutes, we will SMS or Call to confirm the order.
+                </p>
+                <p class="small">
+                    * For the orders from <span><strong>21:30 pm to 8 am</strong></span> the next day, we will contact you before 10 pm on the same day.
+                </p>
+                <p class="small">
+                    If you need any assistance, please contact <span><strong>0914123456</strong></span>. Thank you very much!
+                </p>
+            </div>
+            <hr class="soft" />
+            <h5> Order Details</h5>
+            <div class="well span11">
+                <form>
+                    <p class="small">
+                        Order ID: <span><strong>@order.OrderId</strong></span>
+                    </p>
+                    <p class="small">
+                        Address: <span><strong>@order.Address </strong></span>
+                    </p>
+                    <p class="small">
+                        Created: <span><strong>@order.OrderDate</strong></span>
+                    </p>
+                </form>
+            </div>
+        </form>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.cart)
+                {
+                    decimal total = item.product.ProductPrice * item.quantity;
+                    <tr>
+                        <td> <img width="60" src="~/image/@item.product.ProductImage" alt="" /></td>
+                        <td>@item.product.ProductName<br />Color : black</td>
+                        <td>
+                            @item.quantity
+                        </td>
+                        <td>@item.product.ProductPrice</td>
+                        <td>@total</td>
+                    </tr>
+                 }
+                 <tr>
+                    <td colspan="5" style="text-align:right"><strong>TOTAL</strong></td>
+                    <td style="display:block"> <strong> @order.Total VND </strong></td>
+                 </tr>
+            </tbody>
+        </table>
+        <a asp-action="Index" asp-controller="Product" class="btn btn-large pull-right">Finish <i class="icon-arrow-right"></i></a>
+    </div>
+</div>
