@@ -78,7 +78,7 @@ namespace AppleAccessoryStore.Controllers
                     else
                     {
                         ViewBag.Message = "Confirm password do not match";
-                        return RedirectToAction(nameof(Register));
+                        return RedirectToAction(nameof(Register), ViewBag.Message = "Add Success, Log in please");
                     }
                 }
                 return RedirectToAction(nameof(Login));
