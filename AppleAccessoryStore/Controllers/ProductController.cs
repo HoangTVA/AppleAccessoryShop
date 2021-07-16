@@ -15,6 +15,7 @@ namespace AppleAccessoryStore.Controllers
    
     public class ProductController : Controller
     {
+        private Apple_Accessory_StoreContext db = new Apple_Accessory_StoreContext();
         IProductRepository productRepository = null;
         IOrderRepository orderRepository = null;
         IOrderDetailRepository detailRepository = null;
@@ -153,9 +154,18 @@ namespace AppleAccessoryStore.Controllers
             return RedirectToAction(nameof(Index));
         }
         // GET: ProductController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var product = productRepository.GetProductById(id.Value);
+            if(product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
         }
 
         // GET: ProductController/Create
@@ -204,22 +214,40 @@ namespace AppleAccessoryStore.Controllers
         }
         */
         // GET: ProductController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var product = productRepository.GetProductById(id.Value);
+            if(product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, TblProduct product)
         {
             try
             {
+                if(id != product.ProductId)
+                {
+                    return NotFound();
+                }
+                if (ModelState.IsValid)
+                {
+                    productRepository.UpdateProduct(product);
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                ViewBag.Message = ex.Message;
                 return View();
             }
         }
@@ -244,5 +272,34 @@ namespace AppleAccessoryStore.Controllers
                 return View();
             }
         }
+
+        public ActionResult Search(string searchString)
+        {
+            if (searchString == null)
+            {
+                return NotFound();
+            }
+            var productList = productRepository.SearchProduct(searchString);
+
+            if (productList == null)
+            {
+                ViewBag.Message = "No product in store";
+            }
+            return View(productList);
+        }
+
+        /*public ActionResult Search(string id)
+        {
+            string searchString = id;
+            var movies = from m in db.TblProducts
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.ProductName.Contains(searchString));
+            }
+
+            return View(movies);
+        }*/
     }
 }

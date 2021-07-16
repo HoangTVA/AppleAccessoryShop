@@ -15,5 +15,7 @@ namespace DataAccess.Repository
         public void InsertProduct(TblProduct user) => ProductDAO.Instance.AddNew(user);
         public void DeleteProduct(int pID) => ProductDAO.Instance.Remove(pID);
         public void UpdateProduct(TblProduct user) => ProductDAO.Instance.Update(user);
+
+        public IEnumerable<TblProduct> SearchProduct(string searchName) => ProductDAO.Instance.SearchByName(searchName);
     }
 }

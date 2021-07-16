@@ -15,5 +15,7 @@ namespace DataAccess.Repository
         void InsertProduct(TblProduct user);
         void DeleteProduct(int uID);
         void UpdateProduct(TblProduct user);
+
+        IEnumerable<TblProduct> SearchProduct(string searchName);
     }
 }
